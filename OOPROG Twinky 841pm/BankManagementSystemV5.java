@@ -130,6 +130,15 @@ public class BankManagementSystemV5 {
         mainFrame.setSize(500, 250);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
+        
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            if (currentUser != null) {
+                currentUser.saveTransactionHistory();
+            }
+            for (User user : userList) {
+                user.saveTransactionHistory();
+            }
+        }));
     }
 
     private static void createLoginPanel() {
