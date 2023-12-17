@@ -1,0 +1,61 @@
+private static void createAndShowGUI() {
+    mainFrame = new JFrame("Login System");
+    mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    mainPanel = new JPanel();
+    cardLayout = new CardLayout();
+    mainPanel.setLayout(cardLayout); // Set CardLayout for mainPanel
+
+    // Create panels for login, registration, and main menu
+    createLoginPanel();
+    createRegisterPanel();
+    createMainMenu();
+
+    ImageIcon icon = new ImageIcon("bgw.png"); // Replace with the actual path to your image
+    Image img = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+    ImageIcon scaledIcon = new ImageIcon(img);
+    JLabel imageLabel = new JLabel(scaledIcon);
+
+    // Create a panel for login details
+    JPanel loginDetailsPanel = new JPanel(new GridLayout(4, 2, 10, 10)); // Adjust grid layout as needed
+
+    // Add login details components to the panel (example labels and text fields)
+    loginDetailsPanel.add(imageLabel);
+    loginDetailsPanel.add(new JLabel("")); // Empty cell for image
+    loginDetailsPanel.add(new JLabel("Username:"));
+    loginDetailsPanel.add(new JTextField());
+    loginDetailsPanel.add(new JLabel("Password:"));
+    loginDetailsPanel.add(new JPasswordField());
+    loginDetailsPanel.add(new JButton("Login"));
+    loginDetailsPanel.add(new JButton("Register")); // Adjust this button based on your needs
+
+    // Create a container panel to hold both the image panel and the main panel with CardLayout
+    JPanel containerPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+    containerPanel.add(loginDetailsPanel);
+
+    mainFrame.add(containerPanel);
+    mainFrame.setSize(700, 300);
+    mainFrame.setLocationRelativeTo(null);
+    mainFrame.setVisible(true);
+
+    // Show the login panel by default
+    cardLayout.show(mainPanel, "LoginPanel");
+
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+        if (currentUser != null) {
+            currentUser.saveTransactionHistory();
+            currentUser.saveProfileInfo();
+        }
+        saveAllUserData();
+    }));
+}
+
+// ... (the rest of your existing code remains unchanged)
+
+private static void createLoginPanel() {
+    // Modify your existing createLoginPanel() method as needed to match the new layout
+}
+
+private static void createRegisterPanel() {
+    // Modify your existing createRegisterPanel() method as needed to match the new layout
+}
