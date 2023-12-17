@@ -1,0 +1,55 @@
+public class BankManagementSystemTest {
+    private static JFrame mainFrame;
+    private static JPanel mainPanel;
+    private static CardLayout cardLayout;
+    private static List<User> userList = new ArrayList<>();
+    private static User currentUser;
+    private static File usersFile = new File("users.txt");
+
+    private static void createAndShowGUI() {
+    mainFrame = new JFrame("Login System");
+    mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    mainPanel = new JPanel();
+    cardLayout = new CardLayout();
+    mainPanel.setLayout(cardLayout); // Set CardLayout for mainPanel
+    //mainPanel.setBackground(new Color(0, 0, 128));
+
+    // Create panels for login, registration, and main menu
+    createLoginPanel();
+    createRegisterPanel();
+    createMainMenu();
+
+
+    ImageIcon icon = new ImageIcon("bgw.png"); // Replace with the actual path to your image
+    Image img = icon.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH);
+    ImageIcon scaledIcon = new ImageIcon(img);
+    JLabel imageLabel = new JLabel(scaledIcon);
+
+    // Create a separate panel for holding the image label
+    JPanel imagePanel = new JPanel(new GridLayout(1, 2, 5, 10));
+    imagePanel.add(imageLabel, BorderLayout.WEST);
+
+
+
+    
+    // Create a container panel to hold both the image panel and the main panel with CardLayout
+    JPanel containerPanel = new JPanel(new GridLayout(1, 2, 5, 10));
+containerPanel.add(imagePanel, BorderLayout.NORTH);
+    containerPanel.add(mainPanel, BorderLayout.CENTER);
+   
+    mainFrame.add(containerPanel);
+    mainFrame.setSize(700, 300);
+    mainFrame.setLocationRelativeTo(null);
+    mainFrame.setVisible(true);
+
+    // Show the login panel by default
+    cardLayout.show(mainPanel, "LoginPanel");
+
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+        if (currentUser != null) {
+            currentUser.saveTransactionHistory();
+            currentUser.saveProfileInfo();
+        }
+        saveAllUserData();
+    }));
